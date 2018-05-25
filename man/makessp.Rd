@@ -81,6 +81,8 @@ Initial estimate of variance parameters for REML estimation of variance componen
   Helwig, N. E. (2013). \emph{Fast and stable smoothing spline analysis of variance models for large samples with applications to electroencephalography data analysis}. Unpublished doctoral dissertation. University of Illinois at Urbana-Champaign.
   
   Helwig, N. E. (2016). Efficient estimation of variance components in nonparametric mixed-effects models with large samples. \emph{Statistics and Computing, 26}, 1319-1336.
+  
+  Helwig, N. E. (2017). \href{http://dx.doi.org/10.3389/fams.2017.00015}{Regression with ordered predictors via ordinal smoothing splines}. Frontiers in Applied Mathematics and Statistics, 3(15), 1-13.
 
 	Helwig, N. E. and Ma, P. (2015). Fast and stable multiple smoothing parameter selection in smoothing spline analysis of variance models with large samples. \emph{Journal of Computational and Graphical Statistics, 24}, 715-732.
   

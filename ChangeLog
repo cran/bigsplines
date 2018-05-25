@@ -1,3 +1,21 @@
+Changes from ver 1.1-0 to ver 1.1-1     [May-25-2018]
+   1) bigsplines-package
+	*   BUG FIX IN bigssp (interactions between parametric and nonparametric effects)
+	*   BUG FIX IN ssBasis (periodic = TRUE input now works)
+	*   Fixed NOTE on CRAN Results page (about registering bigsplines.so)
+	*   Package file is now update-to-date with Description file
+	*   Updated references throughout the package.
+   2) bigssa and bigssp
+	*   Fixed warning for models with a single random effect.
+   3) imagebar
+	*   Improved the default color scheme (for better distinction).
+	*   Function can now take in a single input (x or z)
+   4) summary.bigssa, summary.bigssg, and summary.bigssp
+	*   Added the "diagnostics" option (default diagnostics = FALSE)
+	*   If diagnostics = TRUE, cosine diagnostics are returned.
+
+
+
 Changes from ver 1.0-9 to ver 1.1-0     [Feb-01-2017]
    1) bigsplines-package
 	*   Added linear smoothing spline (type="lin") to bigssa, bigssg, and bigssp

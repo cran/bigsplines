@@ -1,4 +1,4 @@
-useDynLib(bigsplines)
+useDynLib(bigsplines, .registration = TRUE)
 
 exportPattern("^[[:alpha:]]+")
 
@@ -37,6 +37,7 @@ importFrom(graphics, rect)
 importFrom(grDevices, colorRampPalette)
 importFrom(grDevices, col2rgb)
 importFrom(grDevices, heat.colors)
+importFrom(grDevices, rainbow)
 importFrom(grDevices, rgb)
 importFrom(stats, as.formula)
 importFrom(stats, model.response)

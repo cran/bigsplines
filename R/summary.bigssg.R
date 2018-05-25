@@ -1,5 +1,5 @@
 summary.bigssg <- 
-  function(object,fitresid=TRUE,chunksize=10000,...){
+  function(object,fitresid=TRUE,chunksize=10000,diagnostics=FALSE,...){
     
     ndpts <- as.integer(object$ndf[1])
     if(fitresid){
@@ -75,12 +75,26 @@ summary.bigssg <-
       devresid <- NULL
       deviance <- NULL
     }
+    if(diagnostics){
+      if(!fitresid) stop("Need fitresid = TRUE when diagnostics = TRUE.")
+      nterms <- length(object$tnames)
+      imp <- rep(0, nterms)
+      names(imp) <- object$tnames
+      cfit <- yhat$linear.predictors - object$modelspec$coef[1]
+      fitss <- sum(cfit^2)
+      for(k in 1:nterms){
+        yk <- predict.bigssg(object, include = object$tnames[k], intercept = FALSE)$linear.predictors
+        imp[k] <- sum(yk * cfit) / fitss
+      }
+    } else {
+      imp <- NULL
+    }
     sumssg <- list(call=object$call,type=object$type,fitted.values=yhat$fitted.values,
                    linear.predictors=yhat$linear.predictors,residuals=devresid,
                    deviance=deviance,dispersion=object$dispersion,n=object$ndf[1],
                    df=object$ndf[2],info=object$info,converged=object$converged,iter=object$modelspec$iter,
                    rparm=object$modelspec$rparm,lambda=object$modelspec$lambda,gammas=object$modelspec$gammas,
-                   family=object$family,gcvtype=object$modelspec$gcvtype)
+                   pi=imp,family=object$family,gcvtype=object$modelspec$gcvtype)
     class(sumssg) <- "summary.bigssg"
     return(sumssg)
     

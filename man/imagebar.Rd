@@ -15,10 +15,10 @@ imagebar(x,y,z,xlim=NULL,ylim=NULL,zlim=NULL,
 }
 \arguments{
   \item{x, y}{
-	Locations of grid lines at which the values in \code{z} are measured. These must be finite, non-missing and in (strictly) ascending order.
+	Locations of grid lines at which the values in \code{z} are measured. These must be finite, non-missing and in (strictly) ascending order. If only \code{x} is given, the input \code{x} is treated as \code{z}.
 }
   \item{z}{
-  	A matrix containing the values to be plotted (\code{NA}s are allowed).
+  	A matrix containing the values to be plotted (\code{NA}s are allowed). If \code{x} and \code{y} are missing, a sequence from 0 to 1 is used for plotting.
 }
   \item{xlim, ylim}{
   	Ranges for the plotted \code{x} and \code{y} values, defaulting to the ranges of \code{x} and \code{y}.

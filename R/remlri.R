@@ -2,7 +2,7 @@ remlri <-
   function(yty,Xty,Zty,XtX,ZtZ,XtZ,ndf,tau=1,imx=100,tol=10^-5,alg=c("FS","NR","EM")){
     ###### REML Estimation of Random Intercept (via Fisher Scoring or EM)
     ###### Nathaniel E. Helwig (helwig@umn.edu)
-    ###### Last modified: November 22, 2015
+    ###### Last modified: May 23, 2018
     
     ### Inputs:
     # yty: crossprod(y)
@@ -43,7 +43,7 @@ remlri <-
     Deig$vectors <- Deig$vectors[,1:nze]
     
     ### initialize Dmat, sig, and n2LL
-    newval <- 1/(Deig$val+1/tau)
+    newval <- 1 /(Deig$val+1/tau)
     Dmat <- Deig$vec%*%tcrossprod(diag(newval),Deig$vec)
     Bmat <- XtXiZ%*%Dmat
     alpha <- (XtXi+Bmat%*%t(XtXiZ))%*%Xty - Bmat%*%Zty
@@ -71,7 +71,7 @@ remlri <-
       while(ival) {
         
         # update tau parameter estimates
-        tau <- tau + gg/hh
+        tau <- tau + as.numeric(gg/hh)
         if(tau<=0) tau <- 10^-3
         
         # update Dmat, sig, and n2LL
@@ -111,7 +111,7 @@ remlri <-
       while(ival) {
         
         # update tau parameter estimates
-        tau <- tau + gg/hh
+        tau <- tau + as.numeric(gg/hh)
         if(tau<=0) tau <- 10^-3
         
         # update Dmat, sig, and n2LL

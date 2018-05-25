@@ -2,7 +2,7 @@ ssBasis <-
   function(x, knots, m=2, d=0, xmin=min(x), xmax=max(x), periodic=FALSE, intercept=FALSE){
     # smoothing spline basis for polynomial splines
     # Nathaniel E. Helwig (helwig@umn.edu)
-    # last updated: January 30, 2017
+    # last updated: September 9, 2017
     
     ## define Bernoulli polynomials
     k1fun <- function(x) { 
@@ -55,7 +55,11 @@ ssBasis <-
       if(d == 0L){
         Xn <- matrix(1, nx, 1)
         colnames(Xn) <- "null.0"
-        Xc <- matrix(k1fun(x),nx,nknots) * matrix(k1fun(knots),nx,nknots,byrow=TRUE) + k2fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        if(periodic){
+          Xc <- k2fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        } else {
+          Xc <- matrix(k1fun(x),nx,nknots) * matrix(k1fun(knots),nx,nknots,byrow=TRUE) + k2fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } else if(d == 1L){
         Xn <- matrix(0, nx, 1)
@@ -63,7 +67,11 @@ ssBasis <-
         dmat <- matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE)
         smat <- sign(dmat)
         smat[smat==0L] <- 1L
-        Xc <- matrix(k1fun(knots),nx,nknots,byrow=TRUE) + smat * k1fun(abs(dmat))
+        if(periodic){
+          Xc <- smat * k1fun(abs(dmat))
+        } else {
+          Xc <- matrix(k1fun(knots),nx,nknots,byrow=TRUE) + smat * k1fun(abs(dmat))
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } else {
         stop("Cannot set 'd=2' when 'm=1' (need d <= m).")
@@ -76,22 +84,40 @@ ssBasis <-
       
       # check derivative
       if(d == 0L){
-        Xn <- cbind(1, k1fun(x))
-        colnames(Xn) <- paste0("null.",0:1)
-        Xc <- matrix(k2fun(x),nx,nknots) * matrix(k2fun(knots),nx,nknots,byrow=TRUE) - k4fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        if(periodic){
+          Xn <- matrix(1, nx, 1)
+          colnames(Xn) <- "null.0"
+          Xc <- matrix(k2fun(x),nx,nknots) * matrix(k2fun(knots),nx,nknots,byrow=TRUE) - k4fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        } else {
+          Xn <- cbind(1, k1fun(x))
+          colnames(Xn) <- paste0("null.",0:1)
+          Xc <- (-1)*k4fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } else if(d == 1L){
-        Xn <- matrix(c(0,1), nx, 2, byrow=TRUE)
-        colnames(Xn) <- paste0("null.",0:1)
         dmat <- matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE)
         smat <- sign(dmat)
         smat[smat==0L] <- 1L
-        Xc <- matrix(k1fun(x),nx,nknots) * matrix(k2fun(knots),nx,nknots,byrow=TRUE) - smat * k3fun(abs(dmat))
+        if(periodic){
+          Xn <- matrix(0, nx, 1)
+          colnames(Xn) <- "null.0"
+          Xc <- (-1) * smat * k3fun(abs(dmat))
+        } else {
+          Xn <- matrix(c(0,1), nx, 2, byrow=TRUE)
+          colnames(Xn) <- paste0("null.",0:1)
+          Xc <- matrix(k1fun(x),nx,nknots) * matrix(k2fun(knots),nx,nknots,byrow=TRUE) - smat * k3fun(abs(dmat))
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } else {
-        Xn <- matrix(0, nx, 2)
-        colnames(Xn) <- paste0("null.",0:1)
-        Xc <- matrix(k2fun(knots),nx,nknots,byrow=TRUE) - k2fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        if(periodic){
+          Xn <- matrix(0, nx, 1)
+          colnames(Xn) <- "null.0"
+          Xc <- (-1) * k2fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        } else {
+          Xn <- matrix(0, nx, 2)
+          colnames(Xn) <- paste0("null.",0:1)
+          Xc <- matrix(k2fun(knots),nx,nknots,byrow=TRUE) - k2fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } # end if(d == 0L)
       
@@ -102,22 +128,40 @@ ssBasis <-
       
       # check derivative
       if(d == 0L){
-        Xn <- cbind(1, k1fun(x), k2fun(x))
-        colnames(Xn) <- paste0("null.",0:2)
-        Xc <- matrix(k3fun(x),nx,nknots) * matrix(k3fun(knots),nx,nknots,byrow=TRUE) + k6fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        if(periodic){
+          Xn <- matrix(1, nx, 1)
+          colnames(Xn) <- "null.0"
+          Xc <- k6fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        } else {
+          Xn <- cbind(1, k1fun(x), k2fun(x))
+          colnames(Xn) <- paste0("null.",0:2)
+          Xc <- matrix(k3fun(x),nx,nknots) * matrix(k3fun(knots),nx,nknots,byrow=TRUE) + k6fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } else if(d == 1L){
-        Xn <- cbind(0, 1, k1fun(x))
-        colnames(Xn) <- paste0("null.",0:2)
         dmat <- matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE)
         smat <- sign(dmat)
         smat[smat==0L] <- 1L
-        Xc <- matrix(k2fun(x),nx,nknots) * matrix(k3fun(knots),nx,nknots,byrow=TRUE) + smat * k5fun(abs(dmat))
+        if(periodic){
+          Xn <- matrix(0, nx, 1)
+          colnames(Xn) <- "null.0"
+          Xc <- smat * k5fun(abs(dmat))
+        } else {
+          Xn <- cbind(0, 1, k1fun(x))
+          colnames(Xn) <- paste0("null.",0:2)
+          Xc <- matrix(k2fun(x),nx,nknots) * matrix(k3fun(knots),nx,nknots,byrow=TRUE) + smat * k5fun(abs(dmat))
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } else {
-        Xn <- matrix(c(0, 0, 1), nx, 3, byrow=TRUE)
-        colnames(Xn) <- paste0("null.",0:2)
-        Xc <- matrix(k1fun(x),nx,nknots) * matrix(k3fun(knots),nx,nknots,byrow=TRUE) + k4fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) )
+        if(periodic){
+          Xn <- matrix(0, nx, 1)
+          colnames(Xn) <- "null.0"
+          Xc <- k4fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) ) 
+        } else {
+          Xn <- matrix(c(0, 0, 1), nx, 3, byrow=TRUE)
+          colnames(Xn) <- paste0("null.",0:2)
+          Xc <- matrix(k1fun(x),nx,nknots) * matrix(k3fun(knots),nx,nknots,byrow=TRUE) + k4fun( abs( matrix(x,nx,nknots) - matrix(knots,nx,nknots,byrow=TRUE) ) ) 
+        }
         colnames(Xc) <- paste0("knot.",1:nknots)
       } # end if(d == 0L)
       

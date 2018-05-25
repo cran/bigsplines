@@ -7,9 +7,21 @@ imagebar <-
     
     ### define colors
     if(is.null(col[1])){
-      col <- c("blueviolet","blue","cyan","green","yellow","orange","red")
+      #col <- c("blueviolet","blue","cyan","green","yellow","orange","red")
+      col <- c("darkblue", rainbow(12)[c(9,8,7,5,3,2,1)], "darkred")
     }
     col <- colorRampPalette(col)(ncolor)
+    
+    ### check if y and z are mizzing
+    if(missing(y) & missing(z)){
+      z <- as.matrix(x)
+      x <- seq(0, 1, length.out = nrow(z))
+      y <- seq(0, 1, length.out = ncol(z))
+    } else if(missing(x) & missing(y)){
+      z <- as.matrix(z)
+      x <- seq(0, 1, length.out = nrow(z))
+      y <- seq(0, 1, length.out = ncol(z))
+    }
     
     ### get z limits and label
     if(is.null(zlim)){zlim <- range(c(z))}

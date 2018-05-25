@@ -41,6 +41,23 @@
 \alias{unifqsum}
 \alias{unifqsumg}
 
+\alias{cubker}
+\alias{cubkersym}
+\alias{cubkerz}
+\alias{cubkerzsym}
+\alias{linker}
+\alias{linkersym}
+\alias{nomker}
+\alias{nomkersym}
+\alias{ordker}
+\alias{ordkermon}
+\alias{ordkersym}
+\alias{perker}
+\alias{perkersym}
+\alias{sumfreq}
+\alias{tpsker}
+\alias{tpskersym}
+
 
 \title{Internal functions for big splines package}
 \description{

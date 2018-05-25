@@ -12,11 +12,11 @@ Summarizes Fit Information for bigsplines Model
 This function summarizes basic model fit information for a fit \code{bigsplines} model.
 }
 \usage{
-\method{summary}{bigspline}(object,fitresid=TRUE,chunksize=10000,...)
-\method{summary}{bigssa}(object,fitresid=TRUE,chunksize=10000,...)
-\method{summary}{bigssg}(object,fitresid=TRUE,chunksize=10000,...)
-\method{summary}{bigssp}(object,fitresid=TRUE,chunksize=10000,...)
-\method{summary}{bigtps}(object,fitresid=TRUE,chunksize=10000,...)
+\method{summary}{bigspline}(object, fitresid = TRUE, chunksize = 10000, ...)
+\method{summary}{bigssa}(object, fitresid = TRUE, chunksize = 10000, diagnostics = FALSE,...)
+\method{summary}{bigssg}(object, fitresid = TRUE, chunksize = 10000, diagnostics = FALSE,...)
+\method{summary}{bigssp}(object, fitresid = TRUE, chunksize = 10000, diagnostics = FALSE,...)
+\method{summary}{bigtps}(object, fitresid = TRUE, chunksize = 10000, ...)
 }
 \arguments{
   \item{object}{
@@ -27,6 +27,9 @@ This function summarizes basic model fit information for a fit \code{bigsplines}
 }
   \item{chunksize}{
   If \code{fitresid=TRUE}, fitted values are calculated in chunks of size \code{chunksize}.
+}
+  \item{diagnostics}{
+  If \code{diagnostics=TRUE}, cosine diagnostics are calculated for each term in the model. These give an approximate break-down of the model R-squared into that accounted for by each term in the model.
 }
   \item{\ldots}{
   Ignored.
@@ -50,6 +53,7 @@ This function summarizes basic model fit information for a fit \code{bigsplines}
   \item{lambda}{Global smoothing parameter used for model fitting.}
   \item{gammas}{Vector of additional smoothing parameters (only for class "bigssa").}
   \item{thetas}{Vector of additional smoothing parameters (only for class "bigssp").}
+  \item{pi}{Vector of cosine diagnostics.}
   \item{family}{Distribution family (only for class "bigssg").}
   \item{gcvtype}{Smoothing parameter selection criterion (only for class "bigssg").}
 }

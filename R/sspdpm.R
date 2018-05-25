@@ -80,8 +80,8 @@ sspdpm <-
             }
           }
           if(effect=="all" || effect=="non"){
-            Jmats <- cbind(Jmats,rks$jm[[cidx[npchk]]]*as.numeric(xvars[[cidx[pchk]]]))
-            if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk]]]*as.numeric(theknots[[cidx[pchk]]]))}
+            Jmats <- cbind(Jmats,rks$jm[[cidx[npchk]]]*tcprod(xvars[[cidx[pchk]]],theknots[[cidx[pchk]]]))
+            if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk]]]*tcprod(theknots[[cidx[pchk]]]))}
             Jnames <- c(Jnames,paste(xnames[cidx[1]],xnames[cidx[2]],sep=":"))
           }
         } else if(effect=="all" || effect=="lin"){
@@ -157,21 +157,21 @@ sspdpm <-
           }
           if(is.null(rks$kn[[cidx[npchk[2]]]])==FALSE){
             if(effect=="all" || effect=="non"){
-              Jmats <- cbind(Jmats,rks$jm[[cidx[npchk[1]]]]*tcprod(rks$kn[[cidx[npchk[2]]]],rks$qn[[cidx[npchk[2]]]])*as.numeric(xvars[[cidx[pchk]]]))
-              if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk[1]]]]*tcprod(rks$qn[[cidx[npchk[2]]]])*as.numeric(theknots[[cidx[pchk]]]))}
+              Jmats <- cbind(Jmats,rks$jm[[cidx[npchk[1]]]]*tcprod(rks$kn[[cidx[npchk[2]]]],rks$qn[[cidx[npchk[2]]]])*tcprod(xvars[[cidx[pchk]]],theknots[[cidx[pchk]]]))
+              if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk[1]]]]*tcprod(rks$qn[[cidx[npchk[2]]]])*tcprod(theknots[[cidx[pchk]]]))}
               Jnames <- c(Jnames,paste(xnames[cidx[1]],xnames[cidx[2]],xnames[cidx[3]],sep=":"))
             }
           }
           if(!is.null(rks$kn[[cidx[npchk[1]]]])){
             if(effect=="all" || effect=="non"){
-              Jmats <- cbind(Jmats,rks$jm[[cidx[npchk[2]]]]*tcprod(rks$kn[[cidx[npchk[1]]]],rks$qn[[cidx[npchk[1]]]])*as.numeric(xvars[[cidx[pchk]]]))
-              if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk[2]]]]*tcprod(rks$qn[[cidx[npchk[1]]]])*as.numeric(theknots[[cidx[pchk]]]))}
+              Jmats <- cbind(Jmats,rks$jm[[cidx[npchk[2]]]]*tcprod(rks$kn[[cidx[npchk[1]]]],rks$qn[[cidx[npchk[1]]]])*tcprod(xvars[[cidx[pchk]]],theknots[[cidx[pchk]]]))
+              if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk[2]]]]*tcprod(rks$qn[[cidx[npchk[1]]]])*tcprod(theknots[[cidx[pchk]]]))}
               Jnames <- c(Jnames,paste(xnames[cidx[1]],xnames[cidx[2]],xnames[cidx[3]],sep=":"))
             }
           }
           if(effect=="all" || effect=="non"){
-            Jmats <- cbind(Jmats,rks$jm[[cidx[npchk[1]]]]*rks$jm[[cidx[npchk[2]]]]*as.numeric(xvars[[cidx[pchk]]]))
-            if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk[1]]]]*rks$qm[[cidx[npchk[2]]]]*as.numeric(theknots[[cidx[pchk]]]))}
+            Jmats <- cbind(Jmats,rks$jm[[cidx[npchk[1]]]]*rks$jm[[cidx[npchk[2]]]]*tcprod(xvars[[cidx[pchk]]],theknots[[cidx[pchk]]]))
+            if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk[1]]]]*rks$qm[[cidx[npchk[2]]]]*tcprod(theknots[[cidx[pchk]]]))}
             Jnames <- c(Jnames,paste(xnames[cidx[1]],xnames[cidx[2]],xnames[cidx[3]],sep=":"))
           }
         } else if(lenpchk==2L){
@@ -183,8 +183,8 @@ sspdpm <-
             }
           }
           if(effect=="all" || effect=="non"){
-            Jmats <- cbind(Jmats,rks$jm[[cidx[npchk]]]*as.numeric(xvars[[cidx[pchk[1]]]]*xvars[[cidx[pchk[2]]]]))
-            if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk]]]*as.numeric(theknots[[cidx[pchk[1]]]]*theknots[[cidx[pchk[2]]]]))}
+            Jmats <- cbind(Jmats,rks$jm[[cidx[npchk]]]*tcprod(xvars[[cidx[pchk[1]]]],theknots[[cidx[pchk[1]]]])*tcprod(xvars[[cidx[pchk[2]]]],theknots[[cidx[pchk[2]]]])  )
+            if(!pred){Qmats <- cbind(Qmats,rks$qm[[cidx[npchk]]]*tcprod(theknots[[cidx[pchk[1]]]]*theknots[[cidx[pchk[2]]]]))}
             Jnames <- c(Jnames,paste(xnames[cidx[1]],xnames[cidx[2]],xnames[cidx[3]],sep=":"))
           }
         } else if(effect=="all" || effect=="lin"){

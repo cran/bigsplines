@@ -1,5 +1,5 @@
 summary.bigssp <- 
-  function(object,fitresid=TRUE,chunksize=10000,...){
+  function(object,fitresid=TRUE,chunksize=10000,diagnostics=FALSE,...){
     
     ndpts <- as.integer(object$ndf[1])
     if(fitresid){
@@ -34,10 +34,24 @@ summary.bigssp <-
     } else{
       yhat <- resid <- NULL
     }
+    if(diagnostics){
+      if(!fitresid) stop("Need fitresid = TRUE when diagnostics = TRUE.")
+      nterms <- length(object$tnames)
+      imp <- rep(0, nterms)
+      names(imp) <- object$tnames
+      cfit <- yhat - object$modelspec$coef[1]
+      fitss <- sum(cfit^2)
+      for(k in 1:nterms){
+        yk <- predict.bigssp(object, include = object$tnames[k], intercept = FALSE)
+        imp[k] <- sum(yk * cfit) / fitss
+      }
+    } else {
+      imp <- NULL
+    }
     sumssp <- list(call=object$call,type=object$type,fitted.values=yhat,residuals=resid,
                    sigma=object$sigma,n=object$ndf[1],df=object$ndf[2],info=object$info,
                    converged=object$converged,iter=object$modelspec$iter,rparm=object$modelspec$rparm,
-                   lambda=object$modelspec$lambda,thetas=object$modelspec$thetas)
+                   lambda=object$modelspec$lambda,thetas=object$modelspec$thetas,pi=imp)
     class(sumssp) <- "summary.bigssp"
     return(sumssp)
     
